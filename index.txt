@@ -1,0 +1,18 @@
+django-admin.py startproject mysite
+
+python manage.py startapp polls
+
+根据install_app 在mysql 创建库表
+python manage.py migrate
+
+python manage.py runserver
+python manage.py runserver 8000
+对外服务
+python manage.py runserver 0.0.0.0:8000
+
+创建应用新建模型后创建迁移数据,或者修改模型后
+python manage.py makemigrations polls
+需要调用下面的语句进行迁移
+python manage.py migrate
+
+python manage.py shell
