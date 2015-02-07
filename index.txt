@@ -1,3 +1,5 @@
+create database db1 default character set utf8 collate utf8_general_ci;
+
 django-admin.py startproject mysite
 
 python manage.py startapp polls
@@ -16,3 +18,13 @@ python manage.py makemigrations polls
 python manage.py migrate
 
 python manage.py shell
+
+========================================================================
+python manage.py createsuperuser
+
+获取当前django path
+python -c "
+import sys
+sys.path = sys.path[1:]
+import django
+print(django.__path__)"
