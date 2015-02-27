@@ -3,7 +3,7 @@ from django.contrib import admin
 
 # Register your models here.
 from django.contrib import admin
-from polls.models import Choice, Question
+from models import Choice, Question
 
 #通过父类别设置不同的内容页choice效果
 class ChoiceInline(admin.TabularInline):

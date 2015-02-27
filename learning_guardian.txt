@@ -1,0 +1,76 @@
+django-guardian
+
+1.Assign object permissions:
+from polls.model import Tasks
+from django.contrib.auth.models import User
+from django.contrib.auth.models import Group
+boss = User.objects.create(username='Big Boss')
+joe = User.objects.create(username='joe')
+task = Task.objects.create(summary='Some job', content='', reported_by=boss)
+joe.has_perm('view_task', task)
+False
+
+boss = User.objects.get(username='Big Boss')
+joe = User.objects.get(username='joe')
+
+from guardian.shortcuts import assign_perm
+assign_perm('view_task', joe, task)
+joe.has_perm('view_task', task)
+True
+
+==========================================================================
+2.Check object permissions
+2.1.Standard way
+site = Site.objects.get_current()
+joe.has_perm('sites.change_site', site)
+False
+
+site = Site.objects.get_current()
+from guardian.shortcuts import assign_perm
+assign_perm('sites.change_site', joe, site)
+joe = User.objects.get(username='joe')
+joe.has_perm('sites.change_site', site)
+True
+
+2.2.Inside views
+get_perms
+>>> from guardian.shortcuts import get_perms
+>>> joe = User.objects.get(username='joe')
+>>> site = Site.objects.get_current()
+>>> 'change_site' in get_perms(joe, site)
+True
+
+get_objects_for_user
+没看懂
+==========================================================================
+3.Using decorators
+joe = User.objects.get(username='joe')
+foobars = Group.objects.create(name='foobars')
+
+from guardian.decorators import permission_required_or_403
+from django.http import HttpResponse
+
+@permission_required_or_403('auth.change_group', (Group, 'name', 'group_name'))
+def edit_group(request, group_name):
+    return HttpResponse('some form')
+
+from django.http import HttpRequest
+request = HttpRequest()
+request.user = joe
+edit_group(request, group_name='foobars')
+<django.http.HttpResponseForbidden object at 0x102b43dd0>
+
+joe.groups.add(foobars)
+edit_group(request, group_name='foobars')
+<django.http.HttpResponseForbidden object at 0x102b43e50>
+
+from guardian.shortcuts import assign_perm
+assign_perm('auth.change_group', joe, foobars)
+<UserObjectPermission: foobars | joe | change_group>
+
+edit_group(request, group_name='foobars')
+<django.http.HttpResponse object at 0x102b8c8d0>
+>>> # Note that we now get normal HttpResponse, not forbidden
+
+
+

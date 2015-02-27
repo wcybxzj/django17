@@ -1,6 +1,7 @@
 import datetime
 from django.db import models
 from django.utils import timezone
+from django.contrib.auth.models import User
 
 class Question(models.Model):
     question_text = models.CharField(max_length=200)
@@ -27,3 +28,15 @@ class Choice(models.Model):
 
     def __str__(self):              # __unicode__ on Python 2
         return self.choice_text
+
+
+class Task(models.Model):
+    summary = models.CharField(max_length=32)
+    content = models.TextField()
+    reported_by = models.ForeignKey(User)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        permissions = (
+            ('view_task', 'View task'),
+        )
