@@ -37,7 +37,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'polls',
-    'guardian',
+    #'guardian',
     'django.contrib.sites',
 )
 
@@ -45,7 +45,7 @@ SITE_ID = 1
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend', # this is default
-    'guardian.backends.ObjectPermissionBackend',
+    #'guardian.backends.ObjectPermissionBackend',
 )
 
 ANONYMOUS_USER_ID = -1
